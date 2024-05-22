@@ -94,9 +94,29 @@
         var ws = new WebSocket("ws://localhost:8000/ws");
         ws.onmessage = function(event) {
             var messages = document.getElementById('messages');
-            var message = document.createElement('div');
-            message.className = "alert alert-secondary";
-            message.textContent = event.data;
+            var data = JSON.parse(event.data);
+            var message;
+
+            if (data.type === "text") {
+                message = document.createElement('div');
+                message.className = "alert alert-secondary";
+                message.textContent = data.content;
+            } else if (data.type === "image") {
+                message = document.createElement('div');
+                message.className = "alert alert-secondary";
+                var img = document.createElement('img');
+                img.src = data.content;
+                img.style.maxWidth = "100%";
+                message.appendChild(img);
+            } else if (data.type === "graph") {
+                message = document.createElement('div');
+                message.className = "alert alert-secondary";
+                var img = document.createElement('img');
+                img.src = data.content;
+                img.style.maxWidth = "100%";
+                message.appendChild(img);
+            }
+
             messages.appendChild(message);
             messages.scrollTop = messages.scrollHeight;
         };
@@ -111,7 +131,7 @@
                     message.className = "alert alert-primary text-right";
                     message.textContent = input.value;
                     document.getElementById('messages').appendChild(message);
-                    ws.send(input.value);
+                    ws.send(JSON.stringify({ type: "text", content: input.value }));
                     input.value = '';
                 }
 
@@ -121,6 +141,7 @@
                         reader.onload = function(event) {
                             var fileData = event.target.result;
                             var fileMessage = {
+                                type: "file",
                                 filename: files[i].name,
                                 content: fileData
                             };
