@@ -38,6 +38,15 @@ body {
     box-sizing: border-box;  /* パディングを含む幅を計算 */
 }
 
+.controls form div {
+    margin-bottom: 10px;
+}
+
+.controls form div label {
+    display: block;
+    margin-bottom: 5px;
+}
+
 .main-content {
     flex: 1;
     padding: 20px;
