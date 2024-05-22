@@ -1,7 +1,8 @@
 from fastapi import FastAPI, WebSocket, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from app.chat import process_message
+import json
+import base64
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
@@ -15,5 +16,15 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
-        response = process_message(data)
-        await websocket.send_text(response)
+        try:
+            # JSON形式でデコードしてファイルメッセージを処理
+            file_message = json.loads(data)
+            if "filename" in file_message and "content" in file_message:
+                file_data = base64.b64decode(file_message["content"].split(",")[1])
+                response = f"Received file: {file_message['filename']}"
+                # ここでファイルデータを保存するなどの処理を行うことができます
+                await websocket.send_text(response)
+        except json.JSONDecodeError:
+            # テキストメッセージとして処理
+            response = f"Received: {data}"
+            await websocket.send_text(response)

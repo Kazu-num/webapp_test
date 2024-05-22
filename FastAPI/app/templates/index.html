@@ -28,6 +28,7 @@
                     <div id="messages" class="border rounded p-3 mb-3" style="height: 300px; overflow-y: scroll;"></div>
                     <div class="input-group mb-3">
                         <input type="text" id="messageInput" class="form-control" placeholder="Type your message here..." autocomplete="off">
+                        <input type="file" id="fileInput" class="form-control" multiple>
                         <div class="input-group-append">
                             <button class="btn btn-primary" onclick="sendMessage()">Send</button>
                         </div>
@@ -102,13 +103,33 @@
 
         function sendMessage() {
             var input = document.getElementById("messageInput");
-            if (input.value) {
-                var message = document.createElement('div');
-                message.className = "alert alert-primary text-right";
-                message.textContent = input.value;
-                document.getElementById('messages').appendChild(message);
-                ws.send(input.value);
-                input.value = '';
+            var files = document.getElementById("fileInput").files;
+            
+            if (input.value || files.length > 0) {
+                if (input.value) {
+                    var message = document.createElement('div');
+                    message.className = "alert alert-primary text-right";
+                    message.textContent = input.value;
+                    document.getElementById('messages').appendChild(message);
+                    ws.send(input.value);
+                    input.value = '';
+                }
+
+                if (files.length > 0) {
+                    for (let i = 0; i < files.length; i++) {
+                        var reader = new FileReader();
+                        reader.onload = function(event) {
+                            var fileData = event.target.result;
+                            var fileMessage = {
+                                filename: files[i].name,
+                                content: fileData
+                            };
+                            ws.send(JSON.stringify(fileMessage));
+                        };
+                        reader.readAsDataURL(files[i]);
+                    }
+                    document.getElementById('fileInput').value = '';
+                }
             }
         }
     </script>
