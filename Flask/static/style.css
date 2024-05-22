@@ -12,6 +12,9 @@ body {
     background: #f4f4f4;
     padding: 10px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .tab {
@@ -22,6 +25,12 @@ body {
 .tab.active {
     background: #ddd;
     font-weight: bold;
+}
+
+.controls {
+    padding: 10px;
+    background: #eaeaea;
+    border-top: 1px solid #ccc;
 }
 
 .main-content {

@@ -52,34 +52,7 @@
             <div class="tab" data-target="upload">Upload</div>
             <div class="tab" data-target="image">Image</div>
             <div class="tab" data-target="graph">Graph</div>
-            <div class="tab" data-target="controls">Controls</div>
-        </div>
-        <div class="main-content">
-            <div id="chat" class="content">
-                <ul id="messages"></ul>
-                <form id="form" action="">
-                    <input id="input" autocomplete="off" /><button>Send</button>
-                </form>
-            </div>
-            <div id="upload" class="content" style="display: none;">
-                <h2>Upload File</h2>
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file">
-                    <button type="submit">Upload</button>
-                </form>
-            </div>
-            <div id="image" class="content" style="display: none;">
-                <h2>Send Image</h2>
-                <form action="/upload_image" method="post" enctype="multipart/form-data">
-                    <input type="file" name="image">
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-            <div id="graph" class="content" style="display: none;">
-                <h2>Display Graph</h2>
-                <!-- グラフ表示のためのコンテンツをここに追加 -->
-            </div>
-            <div id="controls" class="content" style="display: none;">
+            <div class="controls">
                 <h2>Controls</h2>
                 <form>
                     <div>
@@ -105,6 +78,32 @@
                         <input type="range" name="slider" min="0" max="100" value="50">
                     </div>
                 </form>
+            </div>
+        </div>
+        <div class="main-content">
+            <div id="chat" class="content">
+                <ul id="messages"></ul>
+                <form id="form" action="">
+                    <input id="input" autocomplete="off" /><button>Send</button>
+                </form>
+            </div>
+            <div id="upload" class="content" style="display: none;">
+                <h2>Upload File</h2>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file">
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+            <div id="image" class="content" style="display: none;">
+                <h2>Send Image</h2>
+                <form action="/upload_image" method="post" enctype="multipart/form-data">
+                    <input type="file" name="image">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+            <div id="graph" class="content" style="display: none;">
+                <h2>Display Graph</h2>
+                <!-- グラフ表示のためのコンテンツをここに追加 -->
             </div>
         </div>
     </div>
