@@ -16,6 +16,9 @@
             <li class="nav-item">
                 <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" id="options-tab" data-toggle="tab" href="#options" role="tab" aria-controls="options" aria-selected="false">Options</a>
+            </li>
         </ul>
 
         <!-- Tab panes -->
@@ -45,6 +48,36 @@
                                 <option>Light</option>
                                 <option>Dark</option>
                             </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="options" role="tabpanel" aria-labelledby="options-tab">
+                <div id="options-content" class="mt-3">
+                    <h3>Options</h3>
+                    <form>
+                        <div class="form-group">
+                            <label>Notifications:</label><br>
+                            <input type="checkbox" id="notify-email"> Email<br>
+                            <input type="checkbox" id="notify-sms"> SMS<br>
+                        </div>
+                        <div class="form-group">
+                            <label>Display Mode:</label><br>
+                            <input type="radio" name="display" value="compact" checked> Compact<br>
+                            <input type="radio" name="display" value="expanded"> Expanded<br>
+                        </div>
+                        <div class="form-group">
+                            <label for="language">Language:</label>
+                            <select class="form-control" id="language">
+                                <option>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="volume">Volume:</label>
+                            <input type="range" class="form-control-range" id="volume" min="0" max="100">
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
