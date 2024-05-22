@@ -12,27 +12,44 @@ st.title('Python Chat App with Streamlit')
 tab = st.sidebar.radio("モード選択", ["チャット", "ファイルアップロード", "データフレーム", "オプション"])
 
 if tab == "チャット":
-    # ユーザー入力セクション
-    user_input = st.text_input("あなた: ", "")
+    # テキスト入力
+    user_text = st.text_input("テキスト入力: ", "")
+
+    # 画像アップロード
+    user_image = st.file_uploader("画像アップロード", type=["png", "jpg", "jpeg"])
+
+    # ファイルアップロード (PDF, PowerPoint)
+    user_file = st.file_uploader("ファイルアップロード (PDF, PowerPoint)", type=["pdf", "pptx"])
 
     # ユーザー入力を処理する関数
-    def process_input(user_input):
-        if user_input:
-            response = f"エコー: {user_input}"  # 簡単なエコーレスポンス
-            st.session_state.messages.append({"user": "あなた", "text": user_input})
-            st.session_state.messages.append({"user": "ボット", "text": response})
+    def process_input(user_text, user_image, user_file):
+        if user_text:
+            st.session_state.messages.append({"user": "あなた", "text": user_text})
+            st.session_state.messages.append({"user": "ボット", "text": f"エコー: {user_text}"})
 
-    # ユーザーがEnterキーを押したときに入力を処理
-    if user_input:
-        process_input(user_input)
+        if user_image:
+            st.session_state.messages.append({"user": "あなた", "image": user_image})
+            st.session_state.messages.append({"user": "ボット", "text": "画像がアップロードされました。"})
+
+        if user_file:
+            st.session_state.messages.append({"user": "あなた", "file": user_file})
+            st.session_state.messages.append({"user": "ボット", "text": f"ファイルがアップロードされました: {user_file.name}"})
+
+    # ユーザーが入力を送信したときに処理
+    if st.button('送信'):
+        process_input(user_text, user_image, user_file)
 
     # チャット履歴を表示
     st.subheader("チャット履歴")
     for message in st.session_state.messages:
-        if message['user'] == "あなた":
+        if 'text' in message:
             st.write(f"**{message['user']}:** {message['text']}")
-        else:
-            st.write(f"*{message['user']}:* {message['text']}")
+        elif 'image' in message:
+            st.write(f"**{message['user']} が画像をアップロードしました:**")
+            st.image(message['image'])
+        elif 'file' in message:
+            st.write(f"**{message['user']} がファイルをアップロードしました:**")
+            st.write(f"[{message['file'].name}](upload/{message['file'].name})")
 
 elif tab == "ファイルアップロード":
     # ファイルアップロードセクション
