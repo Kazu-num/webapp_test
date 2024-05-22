@@ -52,6 +52,7 @@
             <div class="tab" data-target="upload">Upload</div>
             <div class="tab" data-target="image">Image</div>
             <div class="tab" data-target="graph">Graph</div>
+            <div class="tab" data-target="controls">Controls</div>
         </div>
         <div class="main-content">
             <div id="chat" class="content">
@@ -77,6 +78,33 @@
             <div id="graph" class="content" style="display: none;">
                 <h2>Display Graph</h2>
                 <!-- グラフ表示のためのコンテンツをここに追加 -->
+            </div>
+            <div id="controls" class="content" style="display: none;">
+                <h2>Controls</h2>
+                <form>
+                    <div>
+                        <label>Checkbox:</label>
+                        <input type="checkbox" name="checkbox1"> Option 1
+                        <input type="checkbox" name="checkbox2"> Option 2
+                    </div>
+                    <div>
+                        <label>Radio Buttons:</label>
+                        <input type="radio" name="radio" value="option1"> Option 1
+                        <input type="radio" name="radio" value="option2"> Option 2
+                    </div>
+                    <div>
+                        <label>Dropdown:</label>
+                        <select name="dropdown">
+                            <option value="value1">Value 1</option>
+                            <option value="value2">Value 2</option>
+                            <option value="value3">Value 3</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Slider:</label>
+                        <input type="range" name="slider" min="0" max="100" value="50">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
