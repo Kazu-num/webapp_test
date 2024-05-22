@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flask_socketio import SocketIO, send
 import os
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -47,8 +48,24 @@ def uploaded_file(filename):
 @socketio.on('message')
 def handleMessage(msg):
     print('Message: ' + msg)
-    reversed_msg = msg[::-1]  # メッセージを逆にする
-    send(reversed_msg, broadcast=True)
+    if 'グラフ表示' in msg:
+        # グラフを生成
+        fig, ax = plt.subplots()
+        ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+        ax.set(xlabel='x-axis', ylabel='y-axis', title='Sample Graph')
+        ax.grid()
+
+        # 画像をファイルに保存
+        graph_path = os.path.join('uploads', 'graph.png')
+        fig.savefig(graph_path)
+        plt.close(fig)
+
+        # グラフの画像URLを送信
+        graph_url = url_for('uploaded_file', filename='graph.png')
+        socketio.emit('graph', {'url': graph_url})
+    else:
+        reversed_msg = msg[::-1]  # メッセージを逆にする
+        send(reversed_msg, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

@@ -37,6 +37,16 @@
                 window.scrollTo(0, document.body.scrollHeight);
             });
 
+            socket.on('graph', function(data) {
+                var item = document.createElement('li');
+                var img = document.createElement('img');
+                img.src = data.url;
+                img.style.maxWidth = '300px';  // 画像のサイズを制限
+                item.appendChild(img);
+                document.getElementById('messages').appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
             // 画像アップロードの処理
             var imageForm = document.getElementById('image-form');
             imageForm.addEventListener('submit', function(e) {
