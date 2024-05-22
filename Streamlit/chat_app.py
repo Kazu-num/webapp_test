@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # セッションステートの初期化
 if 'messages' not in st.session_state:
@@ -51,6 +52,17 @@ if tab == "チャット":
             st.write(f"**{message['user']} がファイルをアップロードしました:**")
             st.write(f"[{message['file'].name}](upload/{message['file'].name})")
 
+    # Pythonプロセスを実行するボタン
+    if st.button('Pythonプロセスを実行'):
+        st.write('Pythonプロセスを実行中...')
+        # 例として、簡単なグラフを表示
+        time.sleep(2)
+        fig, ax = plt.subplots()
+        ax.plot([1, 2, 3, 4], [10, 20, 25, 30])
+        ax.set_title('サンプルグラフ')
+        st.pyplot(fig)
+        st.write('プロセスが完了しました。')
+
 elif tab == "ファイルアップロード":
     # ファイルアップロードセクション
     uploaded_file = st.file_uploader("ファイルを選択", type=["pdf", "pptx", "txt"])
@@ -85,9 +97,3 @@ elif tab == "オプション":
     # スライダーの例
     slider_value = st.slider('値を選択', 0, 100, 50)
     st.write('スライダーの値:', slider_value)
-
-    # Pythonプロセスを実行するボタン
-    if st.button('Pythonプロセスを実行'):
-        st.write('Pythonプロセスを実行中...')
-        time.sleep(2)
-        st.write('プロセスが完了しました。')
