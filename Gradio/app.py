@@ -1,10 +1,15 @@
 import gradio as gr
 
 # チャット関数
-def chat_function(user_input, user_file):
+def chat_function(user_input, user_image, user_file):
     response = f"You said: {user_input}"
+    
+    if user_image is not None:
+        response += f"\nAnd you uploaded an image."
+        
     if user_file is not None:
-        response += f"\nAnd you uploaded: {user_file.name}"
+        response += f"\nAnd you uploaded a file: {user_file.name}"
+    
     return response
 
 # ログ関数（ダミー）
@@ -24,10 +29,14 @@ def config_function(checkbox, radio, dropdown, slider):
 # チャットモードの設定
 chat_interface = gr.Interface(
     fn=chat_function,
-    inputs=[gr.Textbox(lines=2, placeholder="Enter your message here..."), gr.File()],
+    inputs=[
+        gr.Textbox(lines=2, placeholder="Enter your message here..."),
+        gr.Image(type="pil", label="Upload an Image"),
+        gr.File(file_types=[".pdf", ".ppt", ".pptx"], label="Upload a File (PDF or PowerPoint)")
+    ],
     outputs="text",
     title="Chat Mode",
-    description="A chat application that can process text and file inputs."
+    description="A chat application that can process text, images, and file inputs."
 )
 
 # ログモードの設定
