@@ -9,8 +9,17 @@ def chat_function(user_input, user_file):
 
 # ログ関数（ダミー）
 def log_function():
-    # ここにログを表示するための処理を追加
     return "This is a log of your past chats."
+
+# コンフィグ関数
+def config_function(checkbox, radio, dropdown, slider):
+    config_result = (
+        f"Checkbox: {'Checked' if checkbox else 'Unchecked'}\n"
+        f"Radio: {radio}\n"
+        f"Dropdown: {dropdown}\n"
+        f"Slider: {slider}"
+    )
+    return config_result
 
 # チャットモードの設定
 chat_interface = gr.Interface(
@@ -30,6 +39,20 @@ log_interface = gr.Interface(
     description="Displays the chat logs."
 )
 
+# コンフィグモードの設定
+config_interface = gr.Interface(
+    fn=config_function,
+    inputs=[
+        gr.Checkbox(label="Enable feature"),
+        gr.Radio(["Option 1", "Option 2", "Option 3"], label="Select an option"),
+        gr.Dropdown(["Choice A", "Choice B", "Choice C"], label="Choose from the dropdown"),
+        gr.Slider(1, 100, label="Adjust the slider")
+    ],
+    outputs="text",
+    title="Config Mode",
+    description="Configuration settings for the chat application."
+)
+
 # タブの設定
 with gr.Blocks() as demo:
     with gr.Tabs():
@@ -37,6 +60,8 @@ with gr.Blocks() as demo:
             chat_interface.render()
         with gr.TabItem("Log Mode"):
             log_interface.render()
+        with gr.TabItem("Config Mode"):
+            config_interface.render()
 
 # アプリケーションの起動
 if __name__ == "__main__":
