@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flask_socketio import SocketIO, send
 import os
 
@@ -36,7 +36,13 @@ def upload_image():
     if image:
         imagepath = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
         image.save(imagepath)
+        image_url = url_for('uploaded_file', filename=image.filename)
+        socketio.emit('image', {'url': image_url})
         return 'Image uploaded successfully'
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @socketio.on('message')
 def handleMessage(msg):

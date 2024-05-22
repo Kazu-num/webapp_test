@@ -27,6 +27,35 @@
                 window.scrollTo(0, document.body.scrollHeight);
             });
 
+            socket.on('image', function(data) {
+                var item = document.createElement('li');
+                var img = document.createElement('img');
+                img.src = data.url;
+                img.style.maxWidth = '300px';  // 画像のサイズを制限
+                item.appendChild(img);
+                document.getElementById('messages').appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
+            // 画像アップロードの処理
+            var imageForm = document.getElementById('image-form');
+            imageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var formData = new FormData(imageForm);
+                fetch('/upload_image', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Image uploaded successfully');
+                    imageForm.reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
             // タブの切り替え処理
             var tabs = document.querySelectorAll('.tab');
             var contents = document.querySelectorAll('.content');
@@ -110,7 +139,7 @@
             </div>
             <div id="image" class="content" style="display: none;">
                 <h2>Send Image</h2>
-                <form action="/upload_image" method="post" enctype="multipart/form-data">
+                <form id="image-form" method="post" enctype="multipart/form-data">
                     <input type="file" name="image">
                     <button type="submit">Send</button>
                 </form>
