@@ -2,6 +2,38 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 200px;
+    background: #f4f4f4;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #ddd;
+    font-weight: bold;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.content {
+    display: none;
+}
+
 ul {
     list-style-type: none;
     padding: 0;
@@ -17,7 +49,7 @@ li {
 form {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: calc(100% - 220px); /* サイドバーの幅を差し引く */
     background: #fff;
     padding: 10px;
     border-top: 1px solid #ccc;

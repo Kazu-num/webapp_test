@@ -11,7 +11,7 @@
             var socket = io();
             var form = document.getElementById('form');
             var input = document.getElementById('input');
-
+            
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (input.value) {
@@ -26,13 +26,59 @@
                 document.getElementById('messages').appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             });
+
+            // タブの切り替え処理
+            var tabs = document.querySelectorAll('.tab');
+            var contents = document.querySelectorAll('.content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    contents.forEach(content => content.style.display = 'none');
+                    document.getElementById(tab.dataset.target).style.display = 'block';
+                    tab.classList.add('active');
+                });
+            });
+
+            // デフォルトで最初のタブをアクティブに
+            tabs[0].click();
         });
     </script>
 </head>
 <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <div class="container">
+        <div class="sidebar">
+            <div class="tab active" data-target="chat">Chat</div>
+            <div class="tab" data-target="upload">Upload</div>
+            <div class="tab" data-target="image">Image</div>
+            <div class="tab" data-target="graph">Graph</div>
+        </div>
+        <div class="main-content">
+            <div id="chat" class="content">
+                <ul id="messages"></ul>
+                <form id="form" action="">
+                    <input id="input" autocomplete="off" /><button>Send</button>
+                </form>
+            </div>
+            <div id="upload" class="content" style="display: none;">
+                <h2>Upload File</h2>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file">
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+            <div id="image" class="content" style="display: none;">
+                <h2>Send Image</h2>
+                <form action="/upload_image" method="post" enctype="multipart/form-data">
+                    <input type="file" name="image">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+            <div id="graph" class="content" style="display: none;">
+                <h2>Display Graph</h2>
+                <!-- グラフ表示のためのコンテンツをここに追加 -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
