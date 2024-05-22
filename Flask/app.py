@@ -41,7 +41,8 @@ def upload_image():
 @socketio.on('message')
 def handleMessage(msg):
     print('Message: ' + msg)
-    send(msg, broadcast=True)
+    reversed_msg = msg[::-1]  # メッセージを逆にする
+    send(reversed_msg, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
