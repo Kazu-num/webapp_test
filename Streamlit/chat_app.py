@@ -10,7 +10,7 @@ if 'messages' not in st.session_state:
 st.title('Python Chat App with Streamlit')
 
 # サイドバーでタブを選択
-tab = st.sidebar.radio("モード選択", ["チャット", "ファイルアップロード", "データフレーム", "オプション"])
+tab = st.sidebar.radio("モード選択", ["チャット", "ファイルアップロード", "データフレーム"])
 
 if tab == "チャット":
     # テキスト入力
@@ -79,21 +79,22 @@ elif tab == "データフレーム":
         })
         st.write(data)
 
-elif tab == "オプション":
-    option = st.selectbox(
-        'オプションを選択',
-        ('オプション1', 'オプション2', 'オプション3')
-    )
-    st.write('選択されたオプション:', option)
+# オプションセクションをタブの下に追加
+st.sidebar.header("オプション")
+option = st.sidebar.selectbox(
+    'オプションを選択',
+    ('オプション1', 'オプション2', 'オプション3')
+)
+st.sidebar.write('選択されたオプション:', option)
 
-    # チェックボックスの例
-    if st.checkbox('チェックボックスを表示'):
-        st.write('チェックボックスが選択されました')
+# チェックボックスの例
+if st.sidebar.checkbox('チェックボックスを表示'):
+    st.sidebar.write('チェックボックスが選択されました')
 
-    # ラジオボタンの例
-    radio_option = st.radio('ラジオボタンを選択', ['選択肢1', '選択肢2', '選択肢3'])
-    st.write('選択されたラジオボタン:', radio_option)
+# ラジオボタンの例
+radio_option = st.sidebar.radio('ラジオボタンを選択', ['選択肢1', '選択肢2', '選択肢3'])
+st.sidebar.write('選択されたラジオボタン:', radio_option)
 
-    # スライダーの例
-    slider_value = st.slider('値を選択', 0, 100, 50)
-    st.write('スライダーの値:', slider_value)
+# スライダーの例
+slider_value = st.sidebar.slider('値を選択', 0, 100, 50)
+st.sidebar.write('スライダーの値:', slider_value)
