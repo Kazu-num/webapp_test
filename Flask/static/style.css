@@ -34,6 +34,8 @@ body {
     padding: 10px;
     background: #eaeaea;
     border-top: 1px solid #ccc;
+    width: 100%;  /* サイドバーの幅に合わせる */
+    box-sizing: border-box;  /* パディングを含む幅を計算 */
 }
 
 .main-content {
