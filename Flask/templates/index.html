@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
@@ -23,6 +24,7 @@
             socket.on('message', function(msg) {
                 var item = document.createElement('li');
                 item.textContent = msg;
+                item.classList.add('list-group-item');
                 document.getElementById('messages').appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -31,8 +33,9 @@
                 var item = document.createElement('li');
                 var img = document.createElement('img');
                 img.src = data.url;
-                img.style.maxWidth = '300px';  // 画像のサイズを制限
+                img.classList.add('img-fluid');
                 item.appendChild(img);
+                item.classList.add('list-group-item');
                 document.getElementById('messages').appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -41,8 +44,9 @@
                 var item = document.createElement('li');
                 var img = document.createElement('img');
                 img.src = data.url;
-                img.style.maxWidth = '300px';  // 画像のサイズを制限
+                img.classList.add('img-fluid');
                 item.appendChild(img);
+                item.classList.add('list-group-item');
                 document.getElementById('messages').appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -85,79 +89,96 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="tabs">
-                <div class="tab active" data-target="chat">Chat</div>
-                <div class="tab" data-target="upload">Upload</div>
-                <div class="tab" data-target="image">Image</div>
-                <div class="tab" data-target="graph">Graph</div>
-            </div>
-            <div class="controls">
-                <h2>Controls</h2>
-                <form>
-                    <div>
-                        <label>Checkbox:</label>
-                        <div>
-                            <input type="checkbox" name="checkbox1"> Option 1
-                        </div>
-                        <div>
-                            <input type="checkbox" name="checkbox2"> Option 2
-                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active tab" data-target="chat" href="#">Chat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab" data-target="upload" href="#">Upload</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab" data-target="image" href="#">Image</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link tab" data-target="graph" href="#">Graph</a>
+                        </li>
+                    </ul>
+                    <div class="controls mt-3">
+                        <h5>Controls</h5>
+                        <form>
+                            <div class="form-group">
+                                <label>Checkbox:</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="checkbox1">
+                                    <label class="form-check-label">Option 1</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="checkbox2">
+                                    <label class="form-check-label">Option 2</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Radio Buttons:</label>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="radio" value="option1">
+                                    <label class="form-check-label">Option 1</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="radio" value="option2">
+                                    <label class="form-check-label">Option 2</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Dropdown:</label>
+                                <select class="form-control" name="dropdown">
+                                    <option value="value1">Value 1</option>
+                                    <option value="value2">Value 2</option>
+                                    <option value="value3">Value 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Slider:</label>
+                                <input type="range" class="form-control-range" name="slider" min="0" max="100" value="50">
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <label>Radio Buttons:</label>
-                        <div>
-                            <input type="radio" name="radio" value="option1"> Option 1
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div id="chat" class="content">
+                    <ul id="messages" class="list-group"></ul>
+                    <form id="form" class="form-inline mt-3">
+                        <input id="input" autocomplete="off" class="form-control mr-2" style="flex: 1;" />
+                        <button class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+                <div id="upload" class="content" style="display: none;">
+                    <h2>Upload File</h2>
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" name="file">
                         </div>
-                        <div>
-                            <input type="radio" name="radio" value="option2"> Option 2
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+                <div id="image" class="content" style="display: none;">
+                    <h2>Send Image</h2>
+                    <form id="image-form" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" name="image">
                         </div>
-                    </div>
-                    <div>
-                        <label>Dropdown:</label>
-                        <div>
-                            <select name="dropdown">
-                                <option value="value1">Value 1</option>
-                                <option value="value2">Value 2</option>
-                                <option value="value3">Value 3</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Slider:</label>
-                        <div>
-                            <input type="range" name="slider" min="0" max="100" value="50">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="main-content">
-            <div id="chat" class="content">
-                <ul id="messages"></ul>
-                <form id="form" action="">
-                    <input id="input" autocomplete="off" /><button>Send</button>
-                </form>
-            </div>
-            <div id="upload" class="content" style="display: none;">
-                <h2>Upload File</h2>
-                <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file">
-                    <button type="submit">Upload</button>
-                </form>
-            </div>
-            <div id="image" class="content" style="display: none;">
-                <h2>Send Image</h2>
-                <form id="image-form" method="post" enctype="multipart/form-data">
-                    <input type="file" name="image">
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-            <div id="graph" class="content" style="display: none;">
-                <h2>Display Graph</h2>
-                <!-- グラフ表示のためのコンテンツをここに追加 -->
-            </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+                <div id="graph" class="content" style="display: none;">
+                    <h2>Display Graph</h2>
+                    <!-- グラフ表示のためのコンテンツをここに追加 -->
+                </div>
+            </main>
         </div>
     </div>
 </body>
