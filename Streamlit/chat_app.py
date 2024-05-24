@@ -44,7 +44,7 @@ class ChatApp:
         st.sidebar.write('スライダーの値:', st.session_state.slider_value)
 
     def chat_ui(self, tab):
-        chat_container = st.container(height=600)
+        chat_container = st.container(height=700, border=False)
 
         # 現在のタブのチャット履歴を取得
         chat_history = st.session_state["messages"][tab]
