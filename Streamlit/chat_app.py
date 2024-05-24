@@ -13,14 +13,21 @@ class ChatApp:
             st.session_state['current_tab'] = 'チャット1'
 
     def main_ui(self):
-        tab = st.sidebar.radio("mode", ["チャット1", "チャット2"])
-        if tab != st.session_state.current_tab:
-            st.session_state.current_tab = tab
+        st.set_page_config(
+            page_icon="💫",
+            page_title="Chat with Echo Bot")
+
+        tab1, tab2 = st.tabs(["チャット1", "チャット2"])
+
+        with tab1:
+            st.session_state.current_tab = 'チャット1'
+            self.chat_ui('チャット1')
+
+        with tab2:
+            st.session_state.current_tab = 'チャット2'
+            self.chat_ui('チャット2')
 
         self.sidebar_options()
-
-        if tab in ["チャット1", "チャット2"]:
-            self.chat_ui(tab)
 
     def sidebar_options(self):
         st.sidebar.header("オプション")
@@ -37,32 +44,32 @@ class ChatApp:
         st.sidebar.write('スライダーの値:', st.session_state.slider_value)
 
     def chat_ui(self, tab):
-        st.title("🐤 Chat with Echo Bot")
+        chat_container = st.container(height=600)
 
         # 現在のタブのチャット履歴を取得
         chat_history = st.session_state["messages"][tab]
 
         # チャット履歴を全て表示
         for message in chat_history:
-            with st.chat_message(message["role"]):
+            with chat_container.chat_message(message["role"]):
                 st.markdown(message["content"])
 
         # ユーザー入力送信後処理
-        if prompt := st.chat_input("ここに入力してください"):
-
+        prompt = st.chat_input("ここに入力してください", key=f"{tab}_input")
+        if prompt:
             # ユーザの入力を表示する
-            with st.chat_message("user"):
+            with chat_container.chat_message("user"):
                 st.markdown(prompt)
 
             # ユーザの入力をチャット履歴に追加する
             chat_history.append({"role": "user", "content": prompt})
 
-            # Botの返答を表示する
-            with st.chat_message("bot"):
-                st.markdown(prompt)
+            # Botの返答を表示する（例としてエコーメッセージを表示）
+            with chat_container.chat_message("assistant"):
+                st.markdown(f"Echo: {prompt}")
 
             # Botの返答をチャット履歴に追加する
-            chat_history.append({"role": "bot", "content": prompt})
+            chat_history.append({"role": "assistant", "content": f"Echo: {prompt}"})
 
         # 更新されたチャット履歴をセッション状態に保存
         st.session_state["messages"][tab] = chat_history
